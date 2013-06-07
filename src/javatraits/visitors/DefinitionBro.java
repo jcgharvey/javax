@@ -4,11 +4,11 @@ import japa.parser.ast.visitor.VoidVisitorAdapter;
 import javatraits.scopes.Scope;
 
 /**
- * Fifth Visitor
- * Resolve variable assignment
+ * Fourth Visitor
+ * Local variables
  * @author Jourdan Harvey
  *
  */
-public class ResolvingVisitor extends VoidVisitorAdapter<Scope>{
-	
+public class DefinitionBro extends VoidVisitorAdapter<Scope>{
+
 }

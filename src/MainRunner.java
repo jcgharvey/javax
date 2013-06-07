@@ -1,12 +1,13 @@
 import japa.parser.JavaParser;
 import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.visitor.DumpVisitor;
 
 import java.io.File;
-import java.io.FileReader;
 
-import javatraits.visitors.TypingVisitor;
-
+import javatraits.visitors.DefinitionBro;
+import javatraits.visitors.MemberVisitor;
+import javatraits.visitors.ResolvingVisitor;
+import javatraits.visitors.ScopingBro;
+import javatraits.visitors.TypingBro;
 
 public class MainRunner {
 
@@ -14,21 +15,22 @@ public class MainRunner {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		StringReader sr = new StringReader("public class Lars {  private void foo() {}  } ");
 		try {
-			CompilationUnit tree = JavaParser.parse(new File("test/Unit/correct/singleClass.javax"));
-			
-//			DumpVisitor visitor = new DumpVisitor();
-			TypingVisitor visitor = new TypingVisitor();
-			tree.accept(visitor, null);
-			
-//			String output = visitor.getSource();
-//			System.out.println(output);
-			
-			
-		} catch(Exception e) {
+			CompilationUnit tree = JavaParser.parse(new File("src/play.javax"));
+
+			ScopingBro scoping = new ScopingBro();
+			tree.accept(scoping, null);
+			TypingBro typing = new TypingBro();
+			tree.accept(typing, null);
+			MemberVisitor member = new MemberVisitor();
+			tree.accept(member, null);
+			DefinitionBro definition = new DefinitionBro();
+			tree.accept(definition, null);
+			ResolvingVisitor resolving = new ResolvingVisitor();
+			tree.accept(resolving, null);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 }
-

@@ -8,7 +8,7 @@ import japa.parser.ast.visitor.DumpVisitor;
 import java.io.File;
 import java.io.IOException;
 
-import javatraits.visitors.TypingVisitor;
+import javatraits.visitors.TypingBro;
 
 import junit.framework.TestCase;
 
@@ -25,7 +25,7 @@ public class TypingVisitorTest extends TestCase {
 		try {
 			
 			tree = JavaParser.parse(new File(filename));
-			TypingVisitor visitor = new TypingVisitor();
+			TypingBro visitor = new TypingBro();
 			tree.accept(visitor, null);
 			
 		} catch (ParseException e) {

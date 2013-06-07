@@ -1,6 +1,6 @@
 package javatraits.symbols;
 
-public class BuiltInTypeSymbol extends Symbol {
+public class BuiltInTypeSymbol extends BasicSymbol {
 	public static final String bInt = "int";
 	public static final String bLong = "long";
 	public static final String bShort = "short";

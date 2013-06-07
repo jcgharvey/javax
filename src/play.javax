@@ -1,0 +1,7 @@
+package im.packed.as.eh;
+
+public class Lars {
+	public Lars(String stuff){
+		int id = 1;
+	}
+}
