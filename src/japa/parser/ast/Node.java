@@ -21,6 +21,7 @@
  */
 package japa.parser.ast;
 
+import javatraits.scopes.Scope;
 import japa.parser.ast.visitor.DumpVisitor;
 import japa.parser.ast.visitor.EqualsVisitor;
 import japa.parser.ast.visitor.GenericVisitor;
@@ -45,6 +46,8 @@ public abstract class Node {
      * This attribute can store additional information from semantic analysis.
      */
     private Object data;
+
+	private Scope scope;
 
     public Node() {
     }
@@ -193,6 +196,14 @@ public abstract class Node {
     @Override
     public boolean equals(Object obj) {
         return EqualsVisitor.equals(this, (Node) obj);
+    }
+    
+    public void setJTScope(Scope s){
+    	this.scope = s;
+    }
+    
+    public Scope getJTScope(){
+    	return scope;
     }
 
 }
