@@ -1,6 +1,6 @@
 package javatraits.symbols;
 
-import javatraits.types.Type;
+import japa.parser.ast.type.Type;
 
 public class BasicSymbol implements Symbol{
 	private String name;

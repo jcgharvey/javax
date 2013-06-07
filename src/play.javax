@@ -1,6 +1,11 @@
 package im.packed.as.eh;
 
+import java.util.*;
+
 public class Lars {
+	
+	private static String fieldStr;
+
 	public Lars(String stuff){
 		int id = 1;
 	}
