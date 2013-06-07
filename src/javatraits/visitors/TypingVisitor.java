@@ -1,13 +1,15 @@
 package javatraits.visitors;
 
-import javatraits.scopes.ClassScope;
-import javatraits.scopes.GlobalScope;
+import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.ImportDeclaration;
+import japa.parser.ast.PackageDeclaration;
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.EnumDeclaration;
+import japa.parser.ast.visitor.VoidVisitorAdapter;
 import javatraits.scopes.Scope;
 import javatraits.symbols.BuiltInTypeSymbol;
 import javatraits.symbols.ClassSymbol;
-import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-import japa.parser.ast.visitor.VoidVisitorAdapter;
+import javatraits.symbols.ImportedSymbol;
 
 /**
  * First Visitor
@@ -41,5 +43,27 @@ public class TypingVisitor extends VoidVisitorAdapter<Scope>{
 		super.visit(n, null);
 	}
 	
+	@Override
+	public void visit(EnumDeclaration n, Scope arg) {
+		ClassSymbol symbol = new ClassSymbol(n.getName(), n.getModifiers());
+		Scope scope = n.getJTScope();
+		scope.addSymbol(symbol);
+		super.visit(n, arg);
+	}
 	
+	@Override
+	public void visit(ImportDeclaration n, Scope arg) {
+		ImportedSymbol symbol = new ImportedSymbol(n.getName());
+		Scope scope = n.getJTScope();
+		scope.addSymbol(symbol);
+		super.visit(n, arg);
+	}
+	
+	@Override
+	public void visit(PackageDeclaration n, Scope arg) {
+		ImportedSymbol symbol = new ImportedSymbol(n.getName());
+		Scope scope = n.getJTScope();
+		scope.addSymbol(symbol);
+		super.visit(n, arg);
+	}
 }

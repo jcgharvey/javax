@@ -87,6 +87,8 @@ import javatraits.scopes.Scope;
 
 public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 
+	// Create scopes for visitors with scopes
+	
 	@Override
 	public void visit(CompilationUnit n, Scope scope) {
 		scope = new GlobalScope();
@@ -168,11 +170,10 @@ public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 	public void visit(TryStmt n, Scope arg) {
 		Scope scope = new BasicScope(arg);
 		n.setJTScope(scope);
-//		n.setJTScope(arg);
 		super.visit(n, scope);
 	}
 
-	// Set the scope in every visitor
+	// Set the scope in every remaining visitor
 
 	@Override
 	public void visit(AnnotationDeclaration n, Scope arg) {
@@ -575,5 +576,4 @@ public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 		n.setJTScope(arg);
 		super.visit(n, arg);
 	}
-
 }
