@@ -10,5 +10,7 @@ public class MethodSymbol extends ParameterizedSymbol {
 	public MethodSymbol(String name, Type type, int modifiers, List<Parameter> parameters) {
 		super(name, type, modifiers, parameters);
 	}
+	
+	
 
 }

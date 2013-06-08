@@ -16,7 +16,7 @@ public interface Scope {
 	
 	public Symbol getSymbol(String name) throws SymbolNotFoundException;
 	
-	public boolean addSymbol(Symbol symbol);
+	public void addSymbol(Symbol symbol);
 	
 	public boolean symbolExists(String name);
 	

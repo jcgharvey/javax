@@ -5,6 +5,7 @@ import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.PackageDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.EnumDeclaration;
+import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 import javatraits.scopes.Scope;
 import javatraits.symbols.BuiltInTypeSymbol;

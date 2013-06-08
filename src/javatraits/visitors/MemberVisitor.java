@@ -84,8 +84,10 @@ public class MemberVisitor extends VoidVisitorAdapter<Scope> {
 		// get parameters
 		List<Parameter> parameters = n.getParameters() == null ? new ArrayList<Parameter>()
 				: n.getParameters();
+		
 		Symbol symbol = new MethodSymbol(n.getName(), n.getType(),
-				n.getModifiers(), n.getParameters());
+				n.getModifiers(), parameters);
+		System.out.println("Found method " + symbol.getName());
 		arg.addSymbol(symbol);
 		Scope localScope = n.getJTScope();
 		if(localScope.resolveType(n.getType().toString()) == null){

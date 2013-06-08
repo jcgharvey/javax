@@ -28,7 +28,6 @@ public class DefinitionVisitor extends VoidVisitorAdapter<Scope>{
 	
 	@Override
 	public void visit(VariableDeclarator n, Scope arg) {
-		System.out.println("VARDEC " + n.getId().getName());
 		super.visit(n, null);
 	}
 	
