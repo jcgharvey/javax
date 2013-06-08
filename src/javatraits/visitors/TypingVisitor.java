@@ -36,6 +36,7 @@ public class TypingVisitor extends VoidVisitorAdapter<Scope>{
 		arg.addSymbol(new BuiltInTypeSymbol(BuiltInTypeSymbol.bLong));
 		arg.addSymbol(new BuiltInTypeSymbol(BuiltInTypeSymbol.bShort));
 		arg.addSymbol(new BuiltInTypeSymbol(BuiltInTypeSymbol.bString));
+		arg.addSymbol(new BuiltInTypeSymbol(BuiltInTypeSymbol.bVoid));
 		super.visit(n, null);
 	}
 

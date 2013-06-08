@@ -14,6 +14,7 @@ public class BuiltInTypeSymbol extends BasicSymbol {
 	public static final String bFloat = "float";
 	public static final String bString = "String";
 	public static final String bBoolean = "boolean";
+	public static final String bVoid = "void";
 	
 	public BuiltInTypeSymbol(String name) {
 		super(name, null, 0);

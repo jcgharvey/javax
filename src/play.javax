@@ -1,17 +1,12 @@
-package im.packed.as.eh;
-
-import java.util.*;
-
 public class Lars {
-
-	private String bfields;
-
-	public Lars(String me){
+	
+	void hello(){
+		
 	}
-	public String get(int b){
-		return "";
-	}
-	public String get(int a, int b){
-		return "";
+	
+	private class Dave {
+		public Dave() {
+			hello();
+		}
 	}
 }

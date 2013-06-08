@@ -34,7 +34,7 @@ public class MemberVisitor extends VoidVisitorAdapter<Scope> {
 		className = n.getName();
 		super.visit(n, arg);
 	}
-
+	
 	@Override
 	public void visit(ConstructorDeclaration n, Scope arg) {
 		Scope localScope = n.getJTScope();

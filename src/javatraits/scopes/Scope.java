@@ -1,9 +1,5 @@
 package javatraits.scopes;
 
-import japa.parser.ast.type.Type;
-
-import java.util.List;
-
 import javatraits.symbols.Symbol;
 import javatraits.symbols.SymbolNotFoundException;
 
@@ -23,4 +19,6 @@ public interface Scope {
 	public ScopeType getScopeType();
 	
 	public Symbol resolveType(String name);
+	
+	public void resolveMethod(String name);
 }

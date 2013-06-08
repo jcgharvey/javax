@@ -40,21 +40,22 @@ public class BasicScope implements Scope {
 	@Override
 	public void addSymbol(Symbol symbol) {
 		String name = symbol.getName();
-//		if (symbol.getClass().equals(MethodSymbol.class)) {
-//			List<Symbol> methodSymbols = getSymbolsOfClass(MethodSymbol.class);
-//			for(Symbol methodSymbol : methodSymbols){
-//				if (methodSymbol.equals(symbol)){
-//					throw new CompilationException();
-//				}
-//			}
-//		} else if (symbol.getClass().equals(ConstructorSymbol.class)) {
-//			List<Symbol> constructorSymbols = getSymbolsOfClass(ConstructorSymbol.class);
-//			for(Symbol constructorSymbol : constructorSymbols){
-//				if (constructorSymbol.equals(symbol)){
-//					throw new CompilationException();
-//				}
-//			}
-//		}
+		// if (symbol.getClass().equals(MethodSymbol.class)) {
+		// List<Symbol> methodSymbols = getSymbolsOfClass(MethodSymbol.class);
+		// for(Symbol methodSymbol : methodSymbols){
+		// if (methodSymbol.equals(symbol)){
+		// throw new CompilationException();
+		// }
+		// }
+		// } else if (symbol.getClass().equals(ConstructorSymbol.class)) {
+		// List<Symbol> constructorSymbols =
+		// getSymbolsOfClass(ConstructorSymbol.class);
+		// for(Symbol constructorSymbol : constructorSymbols){
+		// if (constructorSymbol.equals(symbol)){
+		// throw new CompilationException();
+		// }
+		// }
+		// }
 		if (symbols.containsKey(name)) {
 			throw new CompilationException();
 		}
@@ -91,11 +92,29 @@ public class BasicScope implements Scope {
 		Iterator<Entry<String, Symbol>> it = symbols.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, Symbol> pairs = it.next();
-			if(pairs.getValue().getClass().equals(c)){
+			if (pairs.getValue().getClass().equals(c)) {
 				matchedSymbols.add(pairs.getValue());
 			}
 			it.remove(); // avoids a ConcurrentModificationException
 		}
 		return matchedSymbols;
 	}
+
+	@Override
+	public void resolveMethod(String name) {
+		Symbol matchedSymbol = symbols.get(name);
+		System.out.println(symbols.keySet().toString());
+		if (enclosingScope == null){
+			System.out.println("Fail: Couldn't find method " + name);
+			throw new CompilationException();
+		}
+		if (matchedSymbol == null
+				|| !matchedSymbol.getClass().equals(MethodSymbol.class)) {
+			System.out.println("ResolveMethod recurse");
+			enclosingScope.resolveMethod(name);
+		} else {
+			return;
+		}
+	}
+
 }
