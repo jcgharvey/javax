@@ -80,10 +80,19 @@ import japa.parser.ast.type.ReferenceType;
 import japa.parser.ast.type.VoidType;
 import japa.parser.ast.type.WildcardType;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
-import javatraits.scopes.BasicScope;
 import javatraits.scopes.ClassScope;
 import javatraits.scopes.GlobalScope;
+import javatraits.scopes.LocalScope;
 import javatraits.scopes.Scope;
+
+/**
+ * The first visitor.
+ * Sets the scope and enclosing scope for each visit to a node with scope.
+ * Sets the scope current scope for every other visit, so that we can access it later
+ * 
+ * @author Jourdan Harvey
+ *
+ */
 
 public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 
@@ -91,6 +100,7 @@ public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 	
 	@Override
 	public void visit(CompilationUnit n, Scope scope) {
+		System.out.println("Created GlobalScope");
 		scope = new GlobalScope();
 		n.setJTScope(scope);
 		super.visit(n, scope);
@@ -98,6 +108,7 @@ public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 
 	@Override
 	public void visit(ClassOrInterfaceDeclaration n, Scope arg) {
+		System.out.println("Found " + n.getName() + " and gave it a Class scope");
 		Scope scope = new ClassScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
@@ -105,74 +116,81 @@ public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 
 	@Override
 	public void visit(BlockStmt n, Scope arg) {
-		Scope scope = new BasicScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(ConstructorDeclaration n, Scope arg) {
-		Scope scope = new BasicScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(CatchClause n, Scope arg) {
-		Scope scope = new BasicScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(EnumDeclaration n, Scope arg) {
-		Scope scope = new ClassScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(ForeachStmt n, Scope arg) {
-		Scope scope = new BasicScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(ForStmt n, Scope arg) {
-		Scope scope = new BasicScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(IfStmt n, Scope arg) {
-		Scope scope = new BasicScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(MethodDeclaration n, Scope arg) {
-		Scope scope = new ClassScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(SwitchStmt n, Scope arg) {
-		Scope scope = new BasicScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(TryStmt n, Scope arg) {
-		Scope scope = new BasicScope(arg);
+		Scope scope = new LocalScope(arg);
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
-
+	
+	@Override
+	public void visit(WhileStmt n, Scope arg) {
+		Scope scope = new LocalScope(arg);
+		n.setJTScope(scope);
+		super.visit(n, scope);
+	}
+	
 	// Set the scope in every remaining visitor
 
 	@Override
@@ -561,12 +579,6 @@ public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 
 	@Override
 	public void visit(VoidType n, Scope arg) {
-		n.setJTScope(arg);
-		super.visit(n, arg);
-	}
-
-	@Override
-	public void visit(WhileStmt n, Scope arg) {
 		n.setJTScope(arg);
 		super.visit(n, arg);
 	}

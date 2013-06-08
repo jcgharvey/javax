@@ -3,11 +3,11 @@ import japa.parser.ast.CompilationUnit;
 
 import java.io.File;
 
-import javatraits.visitors.DefinitionBro;
-import javatraits.visitors.MemberBro;
-import javatraits.visitors.ResolvingBro;
-import javatraits.visitors.ScopingBro;
-import javatraits.visitors.TypingBro;
+import javatraits.visitors.DefinitionVisitor;
+import javatraits.visitors.MemberVisitor;
+import javatraits.visitors.ResolvingVisitor;
+import javatraits.visitors.ScopingVisitor;
+import javatraits.visitors.TypingVisitor;
 
 public class MainRunner {
 
@@ -18,15 +18,15 @@ public class MainRunner {
 		try {
 			CompilationUnit tree = JavaParser.parse(new File("src/play.javax"));
 
-			ScopingBro scoping = new ScopingBro();
+			ScopingVisitor scoping = new ScopingVisitor();
 			tree.accept(scoping, null);
-			TypingBro typing = new TypingBro();
+			TypingVisitor typing = new TypingVisitor();
 			tree.accept(typing, null);
-			MemberBro member = new MemberBro();
+			MemberVisitor member = new MemberVisitor();
 			tree.accept(member, null);
-			DefinitionBro definition = new DefinitionBro();
+			DefinitionVisitor definition = new DefinitionVisitor();
 			tree.accept(definition, null);
-			ResolvingBro resolving = new ResolvingBro();
+			ResolvingVisitor resolving = new ResolvingVisitor();
 			tree.accept(resolving, null);
 
 		} catch (Exception e) {

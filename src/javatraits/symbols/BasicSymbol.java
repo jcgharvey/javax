@@ -3,9 +3,9 @@ package javatraits.symbols;
 import japa.parser.ast.type.Type;
 
 public class BasicSymbol implements Symbol{
-	private String name;
-	private Type type;
-	private int modifiers;
+	protected String name;
+	protected Type type;
+	protected int modifiers;
 
 	public BasicSymbol(String name, Type type, int modifiers) {
 		this.name = name;

@@ -21,6 +21,7 @@ public class TypingVisitor extends VoidVisitorAdapter<Scope>{
 
 	@Override
 	public void visit(CompilationUnit n, Scope arg) {
+		System.out.println("Created some built in symbols");
 		arg = n.getJTScope();
 		arg.addSymbol(new BuiltInTypeSymbol(BuiltInTypeSymbol.bBoolean));
 		arg.addSymbol(new BuiltInTypeSymbol(BuiltInTypeSymbol.bByte));
@@ -36,34 +37,40 @@ public class TypingVisitor extends VoidVisitorAdapter<Scope>{
 
 	@Override
 	public void visit(ClassOrInterfaceDeclaration n, Scope arg) {
+		arg = n.getJTScope();
+		System.out.println("Found Class " + n.getName() + " in scope " + arg.getEnclosingScope().getClass().toString());
 		ClassSymbol symbol = new ClassSymbol(n.getName(), n.getModifiers());
 		arg.addSymbol(symbol);
+		super.visit(n, null);
+	}
+	
+	@Override
+	public void visit(EnumDeclaration n, Scope arg) {
+		arg = n.getJTScope();
+		System.out.println("Found enum " + n.getName() + " in scope " + arg.getEnclosingScope().getClass().toString());
+		ClassSymbol symbol = new ClassSymbol(n.getName(), n.getModifiers());
 		Scope scope = n.getJTScope();
 		scope.addSymbol(symbol);
 		super.visit(n, null);
 	}
 	
 	@Override
-	public void visit(EnumDeclaration n, Scope arg) {
-		ClassSymbol symbol = new ClassSymbol(n.getName(), n.getModifiers());
-		Scope scope = n.getJTScope();
-		scope.addSymbol(symbol);
-		super.visit(n, arg);
-	}
-	
-	@Override
 	public void visit(ImportDeclaration n, Scope arg) {
+		arg = n.getJTScope();
+		System.out.println("Found import " + n.getName() + " in scope " + arg.getEnclosingScope().getClass().toString());
 		ImportedSymbol symbol = new ImportedSymbol(n.getName());
 		Scope scope = n.getJTScope();
 		scope.addSymbol(symbol);
-		super.visit(n, arg);
+		super.visit(n, null);
 	}
 	
 	@Override
 	public void visit(PackageDeclaration n, Scope arg) {
+		arg = n.getJTScope();
+		System.out.println("Found package " + n.getName() + " in scope " + arg.getClass().toString());
 		ImportedSymbol symbol = new ImportedSymbol(n.getName());
 		Scope scope = n.getJTScope();
 		scope.addSymbol(symbol);
-		super.visit(n, arg);
+		super.visit(n, null);
 	}
 }

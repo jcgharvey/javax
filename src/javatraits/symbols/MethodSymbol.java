@@ -1,11 +1,14 @@
 package javatraits.symbols;
 
+import japa.parser.ast.body.Parameter;
 import japa.parser.ast.type.Type;
 
-public class MethodSymbol extends BasicSymbol {
+import java.util.List;
 
-	public MethodSymbol(String name, Type type, int modifiers) {
-		super(name, type, modifiers);
+public class MethodSymbol extends ParameterizedSymbol {
+
+	public MethodSymbol(String name, Type type, int modifiers, List<Parameter> parameters) {
+		super(name, type, modifiers, parameters);
 	}
 
 }
