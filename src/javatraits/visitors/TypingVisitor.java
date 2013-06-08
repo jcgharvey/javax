@@ -4,13 +4,16 @@ import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.PackageDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.ConstructorDeclaration;
 import japa.parser.ast.body.EnumDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 import javatraits.scopes.Scope;
 import javatraits.symbols.BuiltInTypeSymbol;
 import javatraits.symbols.ClassSymbol;
+import javatraits.symbols.ConstructorSymbol;
 import javatraits.symbols.ImportedSymbol;
+import javatraits.symbols.MethodSymbol;
 
 /**
  * First Visitor
@@ -46,6 +49,15 @@ public class TypingVisitor extends VoidVisitorAdapter<Scope>{
 	}
 	
 	@Override
+	public void visit(ConstructorDeclaration n, Scope arg) {
+		arg = n.getJTScope();
+		System.out.println("Found constructor " + n.getName() + " in scope " + arg.getEnclosingScope().getClass().toString());
+		ConstructorSymbol symbol = new ConstructorSymbol(n.getName(), n.getModifiers(), n.getParameters());
+		arg.addSymbol(symbol);
+		super.visit(n, arg);
+	}
+	
+	@Override
 	public void visit(EnumDeclaration n, Scope arg) {
 		arg = n.getJTScope();
 		System.out.println("Found enum " + n.getName() + " in scope " + arg.getEnclosingScope().getClass().toString());
@@ -66,6 +78,16 @@ public class TypingVisitor extends VoidVisitorAdapter<Scope>{
 	}
 	
 	@Override
+	public void visit(MethodDeclaration n, Scope arg) {
+		arg = n.getJTScope();
+		System.out.println("Found method " + n.getName() + " in scope " + arg.getClass().toString());
+		MethodSymbol symbol = new MethodSymbol(n.getName(), n.getType(), n.getModifiers(), n.getParameters());
+		Scope scope = n.getJTScope();
+		scope.addSymbol(symbol);
+		super.visit(n, null);
+	}
+	
+	@Override
 	public void visit(PackageDeclaration n, Scope arg) {
 		arg = n.getJTScope();
 		System.out.println("Found package " + n.getName() + " in scope " + arg.getClass().toString());
@@ -74,4 +96,6 @@ public class TypingVisitor extends VoidVisitorAdapter<Scope>{
 		scope.addSymbol(symbol);
 		super.visit(n, null);
 	}
+	
+	
 }
