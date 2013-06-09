@@ -6,22 +6,24 @@ import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.Parameter;
 import japa.parser.ast.body.VariableDeclarator;
+import japa.parser.ast.type.ClassOrInterfaceType;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javatraits.CompilationException;
+import javatraits.scopes.ClassScope;
 import javatraits.scopes.Scope;
-import javatraits.symbols.ConstructorSymbol;
+import javatraits.symbols.ClassSymbol;
 import javatraits.symbols.FieldSymbol;
-import javatraits.symbols.MethodSymbol;
 import javatraits.symbols.Symbol;
 import javatraits.symbols.VariableSymbol;
 
 /**
- * Third Visitor Fields & Methods
- * 
+ * Third Visitor 
+ * Fields & Methods
+ * Inheitence
  * @author Jourdan Harvey
  * 
  */
@@ -31,19 +33,31 @@ public class MemberVisitor extends VoidVisitorAdapter<Scope> {
 
 	@Override
 	public void visit(ClassOrInterfaceDeclaration n, Scope arg) {
+		ClassScope localScope = (ClassScope) n.getJTScope();
 		className = n.getName();
+		System.out.println("Member visitor touched class " + n.getName());
+		ClassSymbol classSymbol = (ClassSymbol) localScope.resolveType(className);
+		List<ClassOrInterfaceType> coits = n.getExtends() == null ? new ArrayList<ClassOrInterfaceType>() : n.getExtends();
+		for(ClassOrInterfaceType coit : coits){
+			ClassSymbol symbol = (ClassSymbol) localScope.resolveType(coit.getName());
+			localScope.addParentScope(classSymbol.getScope());
+			((ClassScope) classSymbol.getScope()).addEnclosingScope(symbol.getScope());
+			System.out.print(n.getName() + " EnclosingScopes:");
+			for(Scope s : localScope.getEnclosingScopes()){
+				System.out.print(s.getName() + ",");
+			}
+			System.out.print("\n");
+		}
 		super.visit(n, arg);
 	}
 	
 	@Override
 	public void visit(ConstructorDeclaration n, Scope arg) {
 		Scope localScope = n.getJTScope();
-		System.out.println("ConstructorDecl " + n.getName());
 		if (className.equals(n.getName())) {
 			List<Parameter> parameters = n.getParameters() == null ? new ArrayList<Parameter>()
 					: n.getParameters();
 			for (Parameter p : parameters) {
-				System.out.println("Found type name: " + p.getType().toString());
 				if(localScope.resolveType(p.getType().toString()) == null){
 					throw new CompilationException();
 				}
@@ -62,13 +76,10 @@ public class MemberVisitor extends VoidVisitorAdapter<Scope> {
 		Scope localScope = n.getJTScope();
 		List<VariableDeclarator> variables = n.getVariables();
 		for (VariableDeclarator v : variables) {
-			System.out.println("Found a field variable declarator "
-					+ v.toString() + " in scope " + localScope.getClass().toString()
-					+ " of type " + n.getType());
 			if(localScope.resolveType(n.getType().toString()) == null){
 				throw new CompilationException();
 			}
-			FieldSymbol symbol = new FieldSymbol(v.getId().getName(),
+			Symbol symbol = new FieldSymbol(v.getId().getName(),
 					n.getType(), n.getModifiers());
 			localScope.addSymbol(symbol);
 		}
@@ -87,8 +98,6 @@ public class MemberVisitor extends VoidVisitorAdapter<Scope> {
 			throw new CompilationException();
 		}
 		for (Parameter p : parameters) {
-			System.out.println("Param: " + p.toString() + " in scope "
-					+ arg.getClass().toString());
 			if(localScope.resolveType(p.getType().toString()) == null){
 				throw new CompilationException();
 			}

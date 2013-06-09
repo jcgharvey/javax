@@ -1,12 +1,12 @@
-public class Lars {
-	
-	void hello(){
-		
+public class Test1 {
+	private Inner i;
+	public Test1() {
+		i.hello();
 	}
-	
-	private class Dave {
-		public Dave() {
-			hello();
+
+	public class Inner {
+		public void hello() {
+
 		}
 	}
 }

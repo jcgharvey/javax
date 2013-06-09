@@ -40,9 +40,7 @@ public class DefinitionVisitor extends VoidVisitorAdapter<Scope>{
 			System.out.println("Found some variableDecExpr in a class scope so they must be fields!");
 		} else if (enclosingScope.getScopeType() == ScopeType.Local){
 			List<VariableDeclarator> variables = n.getVars();
-			System.out.println("VariableDeclarator " + n.toString() + " in scope " + arg.getClass().toString());
 			for(VariableDeclarator v : variables){
-				System.out.println("Added variable " + v.getId().getName() + " to scope " + enclosingScope.toString() + " symbol table");
 				Symbol variableSymbol = new VariableSymbol(v.getId().getName(), n.getType(), n.getModifiers());
 				enclosingScope.addSymbol(variableSymbol);
 			}

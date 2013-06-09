@@ -109,84 +109,84 @@ public class ScopingVisitor extends VoidVisitorAdapter<Scope> {
 	@Override
 	public void visit(ClassOrInterfaceDeclaration n, Scope arg) {
 		System.out.println("Found " + n.getName() + " and gave it a Class scope");
-		Scope scope = new ClassScope(arg);
+		Scope scope = new ClassScope(arg, n.getName());
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(BlockStmt n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, "Block");
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(ConstructorDeclaration n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, n.getName());
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(CatchClause n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, "Catch");
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(EnumDeclaration n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, "Enum " + n.getName());
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(ForeachStmt n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, "foreach");
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(ForStmt n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg ,"for");
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(IfStmt n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, "If");
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(MethodDeclaration n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg , n.getName());
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(SwitchStmt n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, "Switch");
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 
 	@Override
 	public void visit(TryStmt n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, "Try");
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}
 	
 	@Override
 	public void visit(WhileStmt n, Scope arg) {
-		Scope scope = new LocalScope(arg);
+		Scope scope = new LocalScope(arg, "While");
 		n.setJTScope(scope);
 		super.visit(n, scope);
 	}

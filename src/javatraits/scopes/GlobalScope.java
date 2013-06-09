@@ -3,8 +3,8 @@ package javatraits.scopes;
 
 public class GlobalScope extends BasicScope {
 	public GlobalScope(){
-		super(null);
-		this.scope = ScopeType.Global;
+		super(null, "Global");
+		this.scopeType = ScopeType.Global;
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package javatraits.symbols;
 import japa.parser.ast.body.Parameter;
 import japa.parser.ast.type.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParameterizedSymbol extends BasicSymbol {
@@ -15,19 +16,16 @@ public class ParameterizedSymbol extends BasicSymbol {
 
 	public ParameterizedSymbol(String name, Type type, int modifiers,
 			List<Parameter> parameters) {
-		this(name, type, modifiers);
+		this(generateSigniture(name,parameters), type, modifiers);
 		this.parameters = parameters;
-		this.name = generateSigniture(name);
 	}
 
 	public List<Parameter> getParameters() {
 		return parameters;
 	}
 
-	private String generateSigniture(String name) {
-		if (parameters == null) {
-			return name;
-		}
+	private static String generateSigniture(String name, List<Parameter> parameters) {
+		parameters = parameters == null ? new ArrayList<Parameter>() : parameters;
 		StringBuilder sb = new StringBuilder(name);
 		sb.append('(');
 		for (int i = 0; i < parameters.size() - 1; i++) {

@@ -1,0 +1,15 @@
+public class Lars {
+
+	// public class Inner {
+	public void hello() {
+
+	}
+
+	// }
+
+	// public class InnerSub extends Inner {
+	public Lars() {
+		hello();
+	}
+	// }
+}

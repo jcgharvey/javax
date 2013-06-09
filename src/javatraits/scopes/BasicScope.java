@@ -1,5 +1,8 @@
 package javatraits.scopes;
 
+import japa.parser.ast.expr.Expression;
+import japa.parser.ast.type.Type;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,24 +13,41 @@ import java.util.Map.Entry;
 import javatraits.CompilationException;
 import javatraits.symbols.BuiltInTypeSymbol;
 import javatraits.symbols.ClassSymbol;
-import javatraits.symbols.ConstructorSymbol;
-import javatraits.symbols.MethodSymbol;
+import javatraits.symbols.ParameterizedSymbol;
 import javatraits.symbols.Symbol;
 import javatraits.symbols.SymbolNotFoundException;
 
 public class BasicScope implements Scope {
-	protected Scope enclosingScope;
+	protected List<Scope> extendsScopes = new ArrayList<Scope>();
+	protected Scope parentScope;
 	protected Map<String, Symbol> symbols;
-	protected ScopeType scope;
+	protected ScopeType scopeType;
+	protected String name;
 
-	public BasicScope(Scope enclosingScope) {
-		this.enclosingScope = enclosingScope;
+	public BasicScope(Scope enclosingScope, String name) {
+		parentScope = enclosingScope;
 		symbols = new HashMap<String, Symbol>();
+		this.name = name;
 	}
 
 	@Override
+	public List<Scope> getEnclosingScopes() {
+		return extendsScopes;
+	}
+
+	@Override
+	public String getName(){
+		return name;
+	}
+	
+	@Override
 	public Scope getEnclosingScope() {
-		return enclosingScope;
+		return parentScope;
+	}
+
+	@Override
+	public void addEnclosingScope(Scope s) {
+		extendsScopes.add(s);
 	}
 
 	@Override
@@ -69,7 +89,7 @@ public class BasicScope implements Scope {
 
 	@Override
 	public ScopeType getScopeType() {
-		return scope;
+		return scopeType;
 	}
 
 	@Override
@@ -81,8 +101,20 @@ public class BasicScope implements Scope {
 				return symbol;
 			}
 		}
-		if (enclosingScope != null) {
-			return enclosingScope.resolveType(name);
+		if (parentScope != null) {
+			return parentScope.resolveType(name);
+		}
+		throw new CompilationException();
+	}
+	
+	@Override
+	public Symbol resolveVariable(String name){
+		System.out.println("VARSYMS: "+symbols.keySet().toString());
+		if (symbols.keySet().contains(name)) {
+			return symbols.get(name);
+		}
+		if (parentScope != null) {
+			return parentScope.resolveType(name);
 		}
 		throw new CompilationException();
 	}
@@ -101,20 +133,57 @@ public class BasicScope implements Scope {
 	}
 
 	@Override
-	public void resolveMethod(String name) {
-		Symbol matchedSymbol = symbols.get(name);
-		System.out.println(symbols.keySet().toString());
-		if (enclosingScope == null){
-			System.out.println("Fail: Couldn't find method " + name);
-			throw new CompilationException();
+	public Type resolveMethod(String name, List<Expression> expressions,
+			boolean runningFirst) {
+		if (runningFirst) {
+			expressions = expressions == null ? new ArrayList<Expression>()
+					: expressions;
+			name = generateName(name, getTypesOfExpressions(expressions));
 		}
-		if (matchedSymbol == null
-				|| !matchedSymbol.getClass().equals(MethodSymbol.class)) {
-			System.out.println("ResolveMethod recurse");
-			enclosingScope.resolveMethod(name);
-		} else {
-			return;
+		// attempt to find the symbol
+		Symbol symbol = symbols.get(name);
+		// if we cant find it lets look at the parent or the extends scopes
+		if(symbol == null){
+			// check the extends scopes first
+			for (Scope s : extendsScopes) {
+				Type tony = ((BasicScope) s).resolveMethod(name, expressions, false);
+				if (tony != null){
+					return tony;
+				}
+			}
+			// check the parent scope if not null
+			if(parentScope != null){
+				return parentScope.resolveMethod(name, expressions, false);
+			} else {
+				//if parent scope is null then we failed to find the method
+				System.out.println("Could not find method " + name);
+				throw new CompilationException();
+			}
+		} else if(symbol.getClass().equals(ParameterizedSymbol.class)){
+			return symbol.getType();
 		}
+		return null;
+	}
+	
+	private String generateName(String name, List<Type> types) {
+		StringBuilder sb = new StringBuilder(name);
+		sb.append('(');
+		for (int i = 0; i < types.size() - 1; i++) {
+			sb.append(types.get(i).toString());
+			sb.append(',');
+		}
+		if (types.size() != 0) {
+			sb.append(types.get(types.size() - 1).toString());
+		}
+		sb.append(')');
+		return sb.toString();
 	}
 
+	private List<Type> getTypesOfExpressions(List<Expression> expressions) {
+		List<Type> types = new ArrayList<Type>();
+		if (expressions.size() == 0) {
+			return types;
+		}
+		return types;
+	}
 }

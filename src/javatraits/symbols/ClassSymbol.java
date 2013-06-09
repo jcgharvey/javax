@@ -1,19 +1,22 @@
 package javatraits.symbols;
 
-import java.util.List;
-
 import javatraits.scopes.ClassScope;
 
 public class ClassSymbol extends BasicSymbol {
 
-	private List<ClassScope> parentScopes;
+	private ClassScope scope;
 
 	public ClassSymbol(String name, int modifiers) {
 		super(name, null, modifiers);
 	}
+	
+	public ClassSymbol(String name, int modifiers, ClassScope scope) {
+		super(name, null, modifiers);
+		this.scope = scope;
+	}
 
-	public void addScope(ClassScope s) {
-		parentScopes.add(s);
+	public ClassScope getScope(){
+		return scope;
 	}
 
 }

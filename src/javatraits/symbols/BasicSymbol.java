@@ -15,7 +15,7 @@ public class BasicSymbol implements Symbol{
 
 	public String getName() {
 		return this.name;
-	} 
+	}
 	
 	public Type getType() {
 		return this.type;
